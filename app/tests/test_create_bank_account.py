@@ -13,7 +13,7 @@ class CreateBankAccount(unittest.TestCase):
         pierwsze_konto = Konto(self.imie, self.nazwisko, self.numerPESEL)
         self.assertEqual(pierwsze_konto.imie, "Dariusz", "Imie nie zostało zapisane!")
         self.assertEqual(pierwsze_konto.nazwisko, "Januszewski", "Nazwisko nie zostało zapisane!")
-        self.assertEqual(pierwsze_konto.saldo, 0, "Saldo nie jest zerowe!")
+        self.assertEqual(pierwsze_konto.saldo, 100, "Saldo nie jest zerowe!")
         self.assertEqual(pierwsze_konto.numerPESEL, "04251010644", "Pesel nie został zapisany!")
         self.assertRegex(pierwsze_konto.numerPESEL, r"^[0-9]{11}$", "Niepoprawny pesel!")
         

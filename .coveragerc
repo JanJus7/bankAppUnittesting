@@ -1,0 +1,8 @@
+[run]
+omit =
+    */usr/lib/python3/*
+
+[report]
+exclude_lines =
+    if __name__ == '__main__':
+    pragma: no cover

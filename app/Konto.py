@@ -13,9 +13,3 @@ class Konto:
             self.saldo += 50
     # def incomingTransfer(self, kwota):
     #     self.saldo += kwota
-
-
-def x(a, b):
-    a = 7
-    b = 2
-    print(a+b)

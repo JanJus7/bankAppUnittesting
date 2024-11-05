@@ -3,42 +3,40 @@ import unittest
 from ..PersonalAccount import PersonalAccount
 
 class CreateBankAccount(unittest.TestCase):
-
-    def setUp(self):
-        self.imie = "Dariusz"
-        self.nazwisko = "Januszewski"
-        self.numerPESEL = "04251010644" 
+    name = "Dariusz"
+    surname = "Januszewski"
+    pesel = "04251010644" 
 
     def testTworzenieKonta(self):
-        pierwsze_konto = PersonalAccount(self.imie, self.nazwisko, self.numerPESEL)
-        self.assertEqual(pierwsze_konto.imie, "Dariusz", "Imie nie zostało zapisane!")
-        self.assertEqual(pierwsze_konto.nazwisko, "Januszewski", "Nazwisko nie zostało zapisane!")
-        self.assertEqual(pierwsze_konto.saldo, 0, "Saldo nie jest zerowe!")
-        self.assertEqual(pierwsze_konto.numerPESEL, "04251010644", "Pesel nie został zapisany!")
-        self.assertRegex(pierwsze_konto.numerPESEL, r"^[0-9]{11}$", "Niepoprawny pesel!")
+        firstPersonalAccount = PersonalAccount(self.name, self.surname, self.pesel)
+        self.assertEqual(firstPersonalAccount.name, "Dariusz", "Imie nie zostało zapisane!")
+        self.assertEqual(firstPersonalAccount.surname, "Januszewski", "Nazwisko nie zostało zapisane!")
+        self.assertEqual(firstPersonalAccount.balance, 0, "Saldo nie jest zerowe!")
+        self.assertEqual(firstPersonalAccount.pesel, "04251010644", "Pesel nie został zapisany!")
+        self.assertRegex(firstPersonalAccount.pesel, r"^[0-9]{11}$", "Niepoprawny pesel!")
         
     def testPromoTrue(self):  
         promoCode = "PROM_ABC"     
-        pierwsze_konto = PersonalAccount(self.imie, self.nazwisko, self.numerPESEL, promoCode)
-        self.assertEqual(pierwsze_konto.saldo, 50, "Saldo nie jest 50!")
-        self.assertRegex(pierwsze_konto.promoCode, promoCode, "Niepoprawny kod promocyjny!")
+        firstPersonalAccount = PersonalAccount(self.name, self.surname, self.pesel, promoCode)
+        self.assertEqual(firstPersonalAccount.balance, 50, "Saldo nie jest 50!")
+        self.assertRegex(firstPersonalAccount.promoCode, promoCode, "Niepoprawny kod promocyjny!")
 
     def testPromoDeclined(self):
-        promoCode = "PROM_ABC" 
-        numerPESEL = "04051010644" 
-        pierwsze_konto = PersonalAccount(self.imie, self.nazwisko, numerPESEL, promoCode)
-        self.assertEqual(pierwsze_konto.saldo, 0, "Saldo nie jest 0")
+        promoCode = "PROM_ABC"
+        pesel = "04051010644" 
+        firstPersonalAccount = PersonalAccount(self.name, self.surname, pesel, promoCode)
+        self.assertEqual(firstPersonalAccount.balance, 0, "Saldo nie jest 0")
 
     def testLoan(self):
-        konto = PersonalAccount(self.imie, self.nazwisko, self.numerPESEL)
-        konto.historia = [100, 500, 600]
-        konto.takeLoan(500)
-        self.assertEqual(konto.saldo, 500)
-        self.assertEqual(konto.historia, [100, 500, 600, 500], "historia nie została zaktualizowana")
+        firstPersonalAccount = PersonalAccount(self.name, self.surname, self.pesel)
+        firstPersonalAccount.history = [100, 500, 600]
+        firstPersonalAccount.takeLoan(500)
+        self.assertEqual(firstPersonalAccount.balance, 500)
+        self.assertEqual(firstPersonalAccount.history, [100, 500, 600, 500], "historia nie została zaktualizowana")
 
     def testLoanDeclined(self):
-        konto = PersonalAccount(self.imie, self.nazwisko, self.numerPESEL)
-        konto.historia = [1, -500, 10]
-        konto.takeLoan(500)
-        self.assertEqual(konto.saldo, 0)
-        self.assertEqual(konto.historia, [1, -500, 10], "błąd w historii")
+        firstPersonalAccount = PersonalAccount(self.name, self.surname, self.pesel)
+        firstPersonalAccount.history = [1, -500, 10]
+        firstPersonalAccount.takeLoan(500)
+        self.assertEqual(firstPersonalAccount.balance, 0)
+        self.assertEqual(firstPersonalAccount.history, [1, -500, 10], "błąd w historii")

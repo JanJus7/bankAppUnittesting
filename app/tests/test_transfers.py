@@ -4,67 +4,61 @@ from ..PersonalAccount import PersonalAccount
 from ..CompanyAccount import CompanyAccount
 
 class TestTransfers(unittest.TestCase):
-    def setUp(self):
-        self.imie = "Dariusz"
-        self.nazwisko = "Januszewski"
-        self.numerPESEL = "04251010644"
+    name = "Dariusz"
+    surname = "Januszewski"
+    pesel = "04251010644"
 
-        self.companyName = "FirmaTest"
-        self.nip = "0123456789"
+    companyName = "LovelyCompanyX"
+    nip = "0123456789"
+
+    def setUp(self):
+        self.firstPersonalAccount = PersonalAccount(self.name, self.surname, self.pesel)
+        self.firstCompanyAccount = CompanyAccount(self.companyName, self.nip)
 
     def testIncomesPersonalAcc(self):
-        pierwsze_konto = PersonalAccount(self.imie, self.nazwisko, self.numerPESEL)
-        pierwsze_konto.incomingTransfer(100)
-        self.assertEqual(pierwsze_konto.saldo, 100, "Nie otrzymałeś jeszcze żadnego przelewu")
+        self.firstPersonalAccount.incomingTransfer(100)
+        self.assertEqual(self.firstPersonalAccount.balance, 100, "Nie otrzymałeś jeszcze żadnego przelewu")
 
     def testOutgoingsPersonalAcc(self):
-        pierwsze_konto = PersonalAccount(self.imie, self.nazwisko, self.numerPESEL)
-        pierwsze_konto.incomingTransfer(100)
-        pierwsze_konto.outgoingTransfer(50)
-        self.assertEqual(pierwsze_konto.saldo, 50, "Nie wykonałeś jeszcze przelewu!")
-        self.assertGreaterEqual(pierwsze_konto.saldo, 0, "Ujemny Balans konta!")
+        self.firstPersonalAccount.incomingTransfer(100)
+        self.firstPersonalAccount.outgoingTransfer(50)
+        self.assertEqual(self.firstPersonalAccount.balance, 50, "Nie wykonałeś jeszcze przelewu!")
+        self.assertGreaterEqual(self.firstPersonalAccount.balance, 0, "Ujemny Balans konta!")
 
     def testIncomesCompanyAcc(self):
-        new_company_acc = CompanyAccount(self.companyName, self.nip)
-        new_company_acc.incomingTransfer(1500)
-        self.assertEqual(new_company_acc.saldo, 1500, "Nie otrzymałeś jeszcze żadnego przelewu!")
+        self.firstCompanyAccount.incomingTransfer(1500)
+        self.assertEqual(self.firstCompanyAccount.balance, 1500, "Nie otrzymałeś jeszcze żadnego przelewu!")
 
     def testOutgoingsCompanyAcc(self):
-        new_company_acc = CompanyAccount(self.companyName, self.nip)
-        new_company_acc.incomingTransfer(1000)
-        new_company_acc.outgoingTransfer(500)
-        self.assertEqual(new_company_acc.saldo, 500, "Nie otrzymałeś jeszcze przelewu!")
-        self.assertGreaterEqual(new_company_acc.saldo, 0, "Ujemny Bilans Konta!")
+        self.firstCompanyAccount.incomingTransfer(1000)
+        self.firstCompanyAccount.outgoingTransfer(500)
+        self.assertEqual(self.firstCompanyAccount.balance, 500, "Nie otrzymałeś jeszcze przelewu!")
+        self.assertGreaterEqual(self.firstCompanyAccount.balance, 0, "Ujemny Bilans Konta!")
 
     def testExpressOutgoingsPersonalAcc(self):
-        pierwsze_konto = PersonalAccount(self.imie, self.nazwisko, self.numerPESEL)
-        pierwsze_konto.incomingTransfer(100)
-        pierwsze_konto.outgoingExpressTransfer(50)
-        self.assertEqual(pierwsze_konto.saldo, 49, "Nie wykonałeś jeszcze przelewu!")
-        self.assertGreaterEqual(pierwsze_konto.saldo, -1, "Ujemny Balans konta!")
+        self.firstPersonalAccount.incomingTransfer(100)
+        self.firstPersonalAccount.outgoingExpressTransfer(50)
+        self.assertEqual(self.firstPersonalAccount.balance, 49, "Nie wykonałeś jeszcze przelewu!")
+        self.assertGreaterEqual(self.firstPersonalAccount.balance, -1, "Ujemny Balans konta!")
 
     def testExpressOutgoingsCompanyAcc(self):
-        new_company_acc = CompanyAccount(self.companyName, self.nip)
-        new_company_acc.incomingTransfer(1000)
-        new_company_acc.outgoingExpressTransfer(500)
-        self.assertEqual(new_company_acc.saldo, 495, "Nie otrzymałeś jeszcze przelewu!")
-        self.assertGreaterEqual(new_company_acc.saldo, -5, "Ujemny Bilans Konta!")
+        self.firstCompanyAccount.incomingTransfer(1000)
+        self.firstCompanyAccount.outgoingExpressTransfer(500)
+        self.assertEqual(self.firstCompanyAccount.balance, 495, "Nie otrzymałeś jeszcze przelewu!")
+        self.assertGreaterEqual(self.firstCompanyAccount.balance, -5, "Ujemny Bilans Konta!")
 
     def testHistoryLogPersonal(self):
-        pierwsze_konto = PersonalAccount(self.imie, self.nazwisko, self.numerPESEL)
-        pierwsze_konto.incomingTransfer(100)
-        pierwsze_konto.incomingTransfer(20)
-        pierwsze_konto.outgoingTransfer(20)
-        pierwsze_konto.incomingTransfer(21)
-        pierwsze_konto.outgoingExpressTransfer(20)
-        self.assertEqual(pierwsze_konto.historia, [100, 20, -20, 21, -20, -1])
+        self.firstPersonalAccount.incomingTransfer(100)
+        self.firstPersonalAccount.incomingTransfer(20)
+        self.firstPersonalAccount.outgoingTransfer(20)
+        self.firstPersonalAccount.incomingTransfer(21)
+        self.firstPersonalAccount.outgoingExpressTransfer(20)
+        self.assertEqual(self.firstPersonalAccount.history, [100, 20, -20, 21, -20, -1])
 
     def testHistoryCompany(self):
-        new_company_acc = CompanyAccount(self.companyName, self.nip)
-        new_company_acc.incomingTransfer(100)
-        new_company_acc.incomingTransfer(20)
-        new_company_acc.outgoingTransfer(20)
-        new_company_acc.incomingTransfer(25)
-        new_company_acc.outgoingExpressTransfer(20)
-        self.assertEqual(new_company_acc.historia, [100, 20, -20, 25, -20, -5])
-        
+        self.firstCompanyAccount.incomingTransfer(100)
+        self.firstCompanyAccount.incomingTransfer(20)
+        self.firstCompanyAccount.outgoingTransfer(20)
+        self.firstCompanyAccount.incomingTransfer(25)
+        self.firstCompanyAccount.outgoingExpressTransfer(20)
+        self.assertEqual(self.firstCompanyAccount.history, [100, 20, -20, 25, -20, -5])

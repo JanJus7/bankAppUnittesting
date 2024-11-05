@@ -1,6 +1,6 @@
-from .Konto import Konto
+from .Account import Account
 
-class CompanyAccount(Konto):
+class CompanyAccount(Account):
 
     expressFee = 5
 

@@ -67,3 +67,4 @@ class TestTransfers(unittest.TestCase):
         new_company_acc.incomingTransfer(25)
         new_company_acc.outgoingExpressTransfer(20)
         self.assertEqual(new_company_acc.historia, [100, 20, -20, 25, -20, -5])
+        

@@ -26,3 +26,14 @@ class PersonalAccount(Konto):
             year += 2000  
 
         return year > 1960
+    
+    def takeLoan(self, amount):
+        last_transactions = self.historia[-5:]  
+        sumTransactions = sum(last_transactions)
+        
+        last_three_transactions = self.historia[-3:]
+        all_incoming = all(transaction > 0 for transaction in last_three_transactions)
+    
+        if all_incoming or sumTransactions > amount:
+            self.saldo += amount
+            self.historia.append(amount)

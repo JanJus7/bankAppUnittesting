@@ -28,3 +28,17 @@ class CreateBankAccount(unittest.TestCase):
         numerPESEL = "04051010644" 
         pierwsze_konto = PersonalAccount(self.imie, self.nazwisko, numerPESEL, promoCode)
         self.assertEqual(pierwsze_konto.saldo, 0, "Saldo nie jest 0")
+
+    def testLoan(self):
+        konto = PersonalAccount(self.imie, self.nazwisko, self.numerPESEL)
+        konto.historia = [100, 500, 600]
+        konto.takeLoan(500)
+        self.assertEqual(konto.saldo, 500)
+        self.assertEqual(konto.historia, [100, 500, 600, 500], "historia nie została zaktualizowana")
+
+    def testLoanDeclined(self):
+        konto = PersonalAccount(self.imie, self.nazwisko, self.numerPESEL)
+        konto.historia = [1, -500, 10]
+        konto.takeLoan(500)
+        self.assertEqual(konto.saldo, 0)
+        self.assertEqual(konto.historia, [1, -500, 10], "błąd w historii")

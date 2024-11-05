@@ -49,3 +49,21 @@ class TestTransfers(unittest.TestCase):
         new_company_acc.outgoingExpressTransfer(500)
         self.assertEqual(new_company_acc.saldo, 495, "Nie otrzymałeś jeszcze przelewu!")
         self.assertGreaterEqual(new_company_acc.saldo, -5, "Ujemny Bilans Konta!")
+
+    def testHistoryLogPersonal(self):
+        pierwsze_konto = PersonalAccount(self.imie, self.nazwisko, self.numerPESEL)
+        pierwsze_konto.incomingTransfer(100)
+        pierwsze_konto.incomingTransfer(20)
+        pierwsze_konto.outgoingTransfer(20)
+        pierwsze_konto.incomingTransfer(21)
+        pierwsze_konto.outgoingExpressTransfer(20)
+        self.assertEqual(pierwsze_konto.historia, [100, 20, -20, 21, -20, -1])
+
+    def testHistoryCompany(self):
+        new_company_acc = CompanyAccount(self.companyName, self.nip)
+        new_company_acc.incomingTransfer(100)
+        new_company_acc.incomingTransfer(20)
+        new_company_acc.outgoingTransfer(20)
+        new_company_acc.incomingTransfer(25)
+        new_company_acc.outgoingExpressTransfer(20)
+        self.assertEqual(new_company_acc.historia, [100, 20, -20, 25, -20, -5])

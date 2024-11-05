@@ -13,7 +13,7 @@ class PersonalAccount(Account):
         self.promoCode = promoCode
         #older method. RE should be better :)
         # if promoCode and promoCode.startswith("PROM_"):
-        if promoCode and re.match("PROM_[A-Z]{3}", promoCode) and self.isYoungEnough():
+        if promoCode and re.match("^PROM_[A-Z]{3}$", promoCode) and self.isYoungEnough():
             self.balance += 50
 
     def isYoungEnough(self):
@@ -33,7 +33,7 @@ class PersonalAccount(Account):
         
         lastThreeTransactions = self.history[-3:]
         allIncoming = all(transaction > 0 for transaction in lastThreeTransactions)
-    
-        if allIncoming or sumTransactions > amount:
+
+        if (allIncoming and len(self.history) >= 3) or (sumTransactions > amount and len(self.history) >= 5):
             self.balance += amount
             self.history.append(amount)

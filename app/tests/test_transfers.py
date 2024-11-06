@@ -1,5 +1,5 @@
 import unittest
-
+from parameterized import parameterized
 from ..PersonalAccount import PersonalAccount
 from ..CompanyAccount import CompanyAccount
 
@@ -19,33 +19,53 @@ class TestTransfers(unittest.TestCase):
         self.firstPersonalAccount.incomingTransfer(100)
         self.assertEqual(self.firstPersonalAccount.balance, 100, "Nie otrzymałeś jeszcze żadnego przelewu")
 
-    def testOutgoingsPersonalAcc(self):
-        self.firstPersonalAccount.incomingTransfer(100)
-        self.firstPersonalAccount.outgoingTransfer(50)
-        self.assertEqual(self.firstPersonalAccount.balance, 50, "Nie wykonałeś jeszcze przelewu!")
-        self.assertGreaterEqual(self.firstPersonalAccount.balance, 0, "Ujemny Balans konta!")
+    @parameterized.expand([
+        (100, 50, 50),
+        (50, 50, 0),
+        (49, 50, 49)
+    ])
+
+    def testOutgoingsPersonalAcc(self, accBalance, lost, result):
+        self.firstPersonalAccount.balance = accBalance
+        self.firstPersonalAccount.outgoingTransfer(lost)
+        self.assertEqual(self.firstPersonalAccount.balance, result, "Nie wykonałeś jeszcze przelewu!")
 
     def testIncomesCompanyAcc(self):
         self.firstCompanyAccount.incomingTransfer(1500)
         self.assertEqual(self.firstCompanyAccount.balance, 1500, "Nie otrzymałeś jeszcze żadnego przelewu!")
 
-    def testOutgoingsCompanyAcc(self):
-        self.firstCompanyAccount.incomingTransfer(1000)
-        self.firstCompanyAccount.outgoingTransfer(500)
-        self.assertEqual(self.firstCompanyAccount.balance, 500, "Nie otrzymałeś jeszcze przelewu!")
-        self.assertGreaterEqual(self.firstCompanyAccount.balance, 0, "Ujemny Bilans Konta!")
+    @parameterized.expand([
+        (100, 50, 50),
+        (50, 50, 0),
+        (49, 50, 49)
+    ])
+        
+    def testOutgoingsCompanyAcc(self, accBalance, lost, result):
+        self.firstCompanyAccount.incomingTransfer(accBalance)
+        self.firstCompanyAccount.outgoingTransfer(lost)
+        self.assertEqual(self.firstCompanyAccount.balance, result, "Nie otrzymałeś jeszcze przelewu!")
 
-    def testExpressOutgoingsPersonalAcc(self):
-        self.firstPersonalAccount.incomingTransfer(100)
-        self.firstPersonalAccount.outgoingExpressTransfer(50)
-        self.assertEqual(self.firstPersonalAccount.balance, 49, "Nie wykonałeś jeszcze przelewu!")
-        self.assertGreaterEqual(self.firstPersonalAccount.balance, -1, "Ujemny Balans konta!")
+    @parameterized.expand([
+        (100, 50, 49),
+        (50, 50, -1),
+        (49, 50, 49)
+    ])
+        
+    def testExpressOutgoingsPersonalAcc(self, accBalance, lost, result):
+        self.firstPersonalAccount.incomingTransfer(accBalance)
+        self.firstPersonalAccount.outgoingExpressTransfer(lost)
+        self.assertEqual(self.firstPersonalAccount.balance, result, "Nie wykonałeś jeszcze przelewu!")
 
-    def testExpressOutgoingsCompanyAcc(self):
-        self.firstCompanyAccount.incomingTransfer(1000)
-        self.firstCompanyAccount.outgoingExpressTransfer(500)
-        self.assertEqual(self.firstCompanyAccount.balance, 495, "Nie otrzymałeś jeszcze przelewu!")
-        self.assertGreaterEqual(self.firstCompanyAccount.balance, -5, "Ujemny Bilans Konta!")
+    @parameterized.expand([
+        (100, 50, 45),
+        (50, 50, -5),
+        (49, 50, 49)
+    ])
+
+    def testExpressOutgoingsCompanyAcc(self, accBalance, lost, result):
+        self.firstCompanyAccount.incomingTransfer(accBalance)
+        self.firstCompanyAccount.outgoingExpressTransfer(lost)
+        self.assertEqual(self.firstCompanyAccount.balance, result, "Nie otrzymałeś jeszcze przelewu!")
 
     def testHistoryLogPersonal(self):
         self.firstPersonalAccount.incomingTransfer(100)

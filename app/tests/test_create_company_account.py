@@ -1,6 +1,6 @@
 import unittest
-from ..CompanyAccount import CompanyAccount
 from parameterized import parameterized
+from ..CompanyAccount import CompanyAccount
 
 class TestCreateCompanyAccount(unittest.TestCase):
     companyName = "LovelyCompanyX"

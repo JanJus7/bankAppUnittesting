@@ -1,5 +1,5 @@
 import unittest
-
+from parameterized import parameterized
 from ..PersonalAccount import PersonalAccount
 from ..AccountRegistry import AccountRegistry
 
@@ -29,9 +29,16 @@ class TestRegistry(unittest.TestCase):
         AccountRegistry.addAccount(self.konto77)
         self.assertEqual(AccountRegistry.getAccountAmount(), 3)
     
-    def testSearchByPesel(self):
+    @parameterized.expand([
+        ("676756678", "676756678"),
+        ("66666666666", "66666666666"),
+        ("77777777777", "77777777777"),
+        ("88888888", None)
+    ])
+
+    def testSearchByPesel(self, pesel, testResult):
         AccountRegistry.addAccount(self.konto66)
         AccountRegistry.addAccount(self.konto77)
-        result = AccountRegistry.searchByPesel(self.pesel66)
-        self.assertEqual(result, self.konto66)
+        result = AccountRegistry.searchByPesel(pesel)
+        self.assertEqual(result and result.pesel, testResult)
               

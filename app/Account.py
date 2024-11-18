@@ -4,8 +4,9 @@ class Account:
         self.history = []
 
     def incomingTransfer(self, amount):
-        self.balance += amount
-        self.history.append(amount)
+        if amount > 0:
+            self.balance += amount
+            self.history.append(amount)
 
     def outgoingTransfer(self, amount):
         if self.balance >= amount:

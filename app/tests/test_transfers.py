@@ -14,10 +14,17 @@ class TestTransfers(unittest.TestCase):
     def setUp(self):
         self.firstPersonalAccount = PersonalAccount(self.name, self.surname, self.pesel)
         self.firstCompanyAccount = CompanyAccount(self.companyName, self.nip)
+    
+    @parameterized.expand([
+        (100, 100),
+        (50, 50),
+        (0, 0),
+        (-40, 0)
+    ])
 
-    def testIncomesPersonalAcc(self):
-        self.firstPersonalAccount.incomingTransfer(100)
-        self.assertEqual(self.firstPersonalAccount.balance, 100, "Nie otrzymałeś jeszcze żadnego przelewu")
+    def testIncomesPersonalAcc(self, amount, balance):
+        self.firstPersonalAccount.incomingTransfer(amount)
+        self.assertEqual(self.firstPersonalAccount.balance, balance, "Nie otrzymałeś jeszcze żadnego przelewu")
 
     @parameterized.expand([
         (100, 50, 50),
@@ -30,9 +37,16 @@ class TestTransfers(unittest.TestCase):
         self.firstPersonalAccount.outgoingTransfer(lost)
         self.assertEqual(self.firstPersonalAccount.balance, result, "Nie wykonałeś jeszcze przelewu!")
 
-    def testIncomesCompanyAcc(self):
-        self.firstCompanyAccount.incomingTransfer(1500)
-        self.assertEqual(self.firstCompanyAccount.balance, 1500, "Nie otrzymałeś jeszcze żadnego przelewu!")
+    @parameterized.expand([
+        (100, 100),
+        (50, 50),
+        (0, 0),
+        (-40, 0)
+    ])
+    
+    def testIncomesCompanyAcc(self, amount, balance):
+        self.firstCompanyAccount.incomingTransfer(amount)
+        self.assertEqual(self.firstCompanyAccount.balance, balance, "Nie otrzymałeś jeszcze żadnego przelewu!")
 
     @parameterized.expand([
         (100, 50, 50),
@@ -75,7 +89,7 @@ class TestTransfers(unittest.TestCase):
         self.firstPersonalAccount.outgoingExpressTransfer(20)
         self.assertEqual(self.firstPersonalAccount.history, [100, 20, -20, 21, -20, -1])
 
-    def testHistoryCompany(self):
+    def testHistoryLogCompany(self):
         self.firstCompanyAccount.incomingTransfer(100)
         self.firstCompanyAccount.incomingTransfer(20)
         self.firstCompanyAccount.outgoingTransfer(20)

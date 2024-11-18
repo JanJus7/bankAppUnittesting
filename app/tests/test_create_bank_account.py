@@ -16,11 +16,6 @@ class CreateBankAccount(unittest.TestCase):
         self.assertEqual(self.firstPersonalAccount.balance, 0, "Saldo nie jest zerowe!")
         self.assertEqual(self.firstPersonalAccount.pesel, "04251010644", "Pesel nie został zapisany!")
         self.assertRegex(self.firstPersonalAccount.pesel, r"^[0-9]{11}$", "Niepoprawny pesel!")
-    
-    # Not needed anymore beacuse I can do it in parameterized with one def :)
-    # def testPromoTrue(self):  
-    #     promoCode = "PROM_ABC"     
-    #     self.assertEqual(self.firstPersonalAccount.balance, 50, "Saldo nie jest 50!")
 
     @parameterized.expand([
         ("PROM_ABC", "04051010644", 0),

@@ -45,6 +45,7 @@ jobs:
 
     - name: Test api tests with unittest
       run: |
+        python3 -m flask --app api.py run
         python3 -m unittest app/apiTests/api_test.py
 
     - name: Test coverage api tests with unittest

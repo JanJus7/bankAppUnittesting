@@ -46,13 +46,12 @@ jobs:
         python3 -m coverage run -m unittest
         python3 -m coverage report --fail-under=100
 
-    - name: Test api tests with unittest
+    - name: Run unit tests
       run: |
-        python3 -m flask --app api.py run
-        python3 -m unittest app/apiTests/api_test.py
+        python3 -m unittest discover -s app/apiTests -p "*.py"  # Discover and run all tests in apiTests folder
 
-    - name: Test coverage api tests with unittest
+    - name: Test coverage with unittest
       run: |
-        python3 -m coverage run -m unittest app/apiTests/api_test.py
+        python3 -m coverage run -m unittest discover -s app/apiTests -p "*.py"
         python3 -m coverage report --fail-under=100
 

@@ -17,8 +17,8 @@ class TestRegistry(unittest.TestCase):
 
     def setUp(self):
         AccountRegistry.registry = []
-        konto = PersonalAccount(self.imie, self.nazwisko, self.pesel)
-        AccountRegistry.addAccount(konto)
+        self.konto = PersonalAccount(self.imie, self.nazwisko, self.pesel)
+        AccountRegistry.addAccount(self.konto)
 
 
     def testAddAccount(self):
@@ -41,4 +41,12 @@ class TestRegistry(unittest.TestCase):
         AccountRegistry.addAccount(self.konto77)
         result = AccountRegistry.searchByPesel(pesel)
         self.assertEqual(result and result.pesel, testResult)
-              
+
+    def testRemoveAccount(self):
+        AccountRegistry.removeAccount(self.konto)
+        self.assertEqual(AccountRegistry.getAccountAmount(), 0)
+
+    def testRemoveNonExistingAccount(self):
+        non_existent_account = PersonalAccount("Fake", "User", "99999999999")
+        AccountRegistry.removeAccount(non_existent_account)
+        self.assertEqual(AccountRegistry.getAccountAmount(), 1)

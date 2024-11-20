@@ -15,3 +15,8 @@ class AccountRegistry:
             if account.pesel == pesel:
                 return account
         return None
+    
+    @classmethod
+    def removeAccount(cls, account):
+        if account in cls.registry:
+            cls.registry.remove(account)

@@ -38,8 +38,17 @@ jobs:
       run: |
           python3 -m unittest
     
-    - name: Test with unittest
+    - name: Test coverage with unittest
       run: |
         python3 -m coverage run -m unittest
+        python3 -m coverage report --fail-under=100
+
+    - name: Test api tests with unittest
+      run: |
+        python3 -m unittest app/apiTests/api_test.py
+
+    - name: Test coverage api tests with unittest
+      run: |
+        python3 -m coverage run -m unittest app/apiTests/api_test.py
         python3 -m coverage report --fail-under=100
 

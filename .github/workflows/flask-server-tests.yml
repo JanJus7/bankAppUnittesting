@@ -38,5 +38,5 @@ jobs:
       run: |
         flask --app app/api.py --debug run &
         # SERVER_PID=$!
-        # python3 -m unittest discover -s app/apiTests -p "*.py"
+        python3 -m unittest discover -s app/apiTests -p "*.py"
         # kill $SERVER_PID

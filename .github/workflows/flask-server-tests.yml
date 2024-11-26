@@ -45,3 +45,4 @@ jobs:
     - name: Stop Flask server
       run: |
         kill $(cat flask.pid)
+

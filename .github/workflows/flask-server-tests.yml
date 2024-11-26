@@ -36,7 +36,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run unit tests
       run: |
-        flask --app app/api.py --debug run &
-        # SERVER_PID=$!
+        flask --app app/api.py --debug run
+        SERVER_PID=$!
         python3 -m unittest discover -s app/apiTests -p "*.py"
-        # kill $SERVER_PID
+        kill $SERVER_PID

@@ -75,4 +75,3 @@ def transfers(pesel):
                 return jsonify({"message": "Insufficient funds"}), 422
         else:
             return jsonify({"message": "Unprocessable entity"}), 422
-

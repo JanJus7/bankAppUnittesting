@@ -24,6 +24,10 @@ class TestRegistry(unittest.TestCase):
     def testAddAccount(self):
         self.assertEqual(AccountRegistry.getAccountAmount(), 1)
 
+    def testAddExistingAccount(self):
+        AccountRegistry.addAccount(self.konto)
+        self.assertEqual(AccountRegistry.getAccountAmount(), 1)
+
     def testAddMultipleAccounts(self):
         AccountRegistry.addAccount(self.konto66)
         AccountRegistry.addAccount(self.konto77)

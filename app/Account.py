@@ -12,6 +12,9 @@ class Account:
         if self.balance >= amount:
             self.balance -= amount
             self.history.append(-amount)
+            return True
+        return False
+        
 
     def outgoingExpressTransfer(self, amount):
         if self.balance >= amount:    
@@ -19,3 +22,5 @@ class Account:
             self.balance -= price
             self.history.append(-amount)
             self.history.append(-self.expressFee)
+            return True
+        return False

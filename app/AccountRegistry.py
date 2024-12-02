@@ -3,7 +3,8 @@ class AccountRegistry:
 
     @classmethod
     def addAccount(cls, account):
-        cls.registry.append(account)
+        if account not in cls.registry:
+            cls.registry.append(account)
 
     @classmethod
     def getAccountAmount(cls):

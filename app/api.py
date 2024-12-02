@@ -9,8 +9,11 @@ def create_account():
     data = request.get_json()
     print(f"Create account request: {data}")
     konto = PersonalAccount(data["name"], data["surname"], data["pesel"])
-    AccountRegistry.addAccount(konto)
-    return jsonify({"message": "Account created"}), 201
+    if AccountRegistry.searchByPesel(konto.pesel):
+        return jsonify({"message": "Account already exists"}), 409
+    else:
+        AccountRegistry.addAccount(konto)
+        return jsonify({"message": "Account created"}), 201
 
 @app.route("/api/accounts/count", methods=['GET'])
 def account_count():

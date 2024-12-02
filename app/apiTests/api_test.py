@@ -18,6 +18,11 @@ class TestApiCRUD(unittest.TestCase):
         r = requests.post(self.url, json=self.payload)
         self.assertEqual(r.status_code, 201)
 
+    def testCreateExistingAccount(self):
+        r = requests.post(self.url, json=self.payload)
+        r = requests.post(self.url, json=self.payload)
+        self.assertEqual(r.status_code, 409)
+
     def testAccountCount(self):
         requests.post(self.url, json=self.payload)
         r = requests.get(self.url + '/count')

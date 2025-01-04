@@ -1,5 +1,8 @@
 import re
 from .Account import Account
+import requests
+import os
+import datetime
 
 class CompanyAccount(Account):
 
@@ -10,6 +13,8 @@ class CompanyAccount(Account):
         self.companyName = companyName
         if re.match("^[0-9]{10}$", nip):
             self.nip = nip
+            if not self.nipValidityCheck(nip):
+                raise ValueError("Company not registered!!")
         else:
             self.nip = "Niepoprawny NIP!"
 
@@ -22,3 +27,18 @@ class CompanyAccount(Account):
         if flag == True and self.balance >= (2*amount):
             self.balance += amount
             self.history.append(amount)
+
+    @classmethod
+    def nipValidityCheck(cls, nip):
+        url = os.getenv('BANK_APP_MF_URL', 'https://wl-test.mf.gov.pl/')
+        today = datetime.datetime.today().strftime('%Y-%m-%d')
+        urlF = url + f"api/search/nip/{nip}?date={today}"
+        print(f"Sending requests to {urlF}")
+        try:
+            response = requests.get(urlF)
+            print(f"Response code is: {response.status_code}, {response.json()}")
+            if response.status_code == 200:
+                return True
+        except requests.RequestException as e:
+            print(f"An error occurred: {e}")
+        return False

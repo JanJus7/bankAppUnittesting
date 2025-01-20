@@ -1,5 +1,6 @@
 import re
 from .Account import Account
+from datetime import date
 
 class PersonalAccount(Account):
 
@@ -37,3 +38,9 @@ class PersonalAccount(Account):
         if (allIncoming and len(self.history) >= 3) or (sumTransactions > amount and len(self.history) >= 5):
             self.balance += amount
             self.history.append(amount)
+    
+    def send_history_to_email(self, smtp_client, recipient):
+        history_str = str(self.history)
+        subject = f"Statement from {date.today().strftime('%Y-%m-%d')}"
+        body = f"Your account history is: {history_str}"
+        return smtp_client.send(subject, body, recipient)

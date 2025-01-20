@@ -3,6 +3,7 @@ from .Account import Account
 import requests
 import os
 import datetime
+from datetime import date
 
 class CompanyAccount(Account):
 
@@ -42,3 +43,9 @@ class CompanyAccount(Account):
         except requests.RequestException as e:
             print(f"An error occurred: {e}")
         return False
+    
+    def send_history_to_email(self, smtp_client, recipient):
+        history_str = str(self.history)
+        subject = f"Statement from {date.today().strftime('%Y-%m-%d')}"
+        body = f"Your company account history is: {history_str}"
+        return smtp_client.send(subject, body, recipient)

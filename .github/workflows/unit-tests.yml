@@ -18,8 +18,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          - name: Test with unittest
-          run: |
+      - name: Test with unittest
+        run: |
               python3 -m unittest
       - name: Test coverage with unittest
         run: |

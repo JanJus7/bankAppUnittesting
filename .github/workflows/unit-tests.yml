@@ -1,0 +1,27 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          - name: Test with unittest
+          run: |
+              python3 -m unittest
+      - name: Test coverage with unittest
+        run: |
+          python3 -m coverage run -m unittest
+          python3 -m coverage report --fail-under=100

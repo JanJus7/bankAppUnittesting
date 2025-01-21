@@ -18,9 +18,11 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-      - name: Start Flask app
+      - name: Start Flask server
         run: |
-          flask run --app app/api.py &
-      - name: Run Gherkin tests
+          nohup flask --app app/api.py --debug run &
+          echo $! > flask.pid
+      - name: Run gherkin tests
         run: |
+          sleep 5
           behave app/features

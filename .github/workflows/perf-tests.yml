@@ -17,9 +17,11 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-      - name: Start Flask app
+      - name: Start Flask server
         run: |
-          flask run --app app/api.py & 
+          nohup flask --app app/api.py --debug run &
+          echo $! > flask.pid
       - name: Run performance tests
         run: |
+          sleep 5
           python -m unittest discover app/preformance

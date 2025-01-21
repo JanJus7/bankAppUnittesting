@@ -24,4 +24,4 @@ jobs:
       - name: Run performance tests
         run: |
           sleep 5
-          python -m unittest discover app/performanceTests
+          python3 -m unittest app/performanceTests/api_performance_test.py

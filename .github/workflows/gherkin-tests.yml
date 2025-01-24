@@ -1,0 +1,28 @@
+name: Gherkin Tests
+
+on:
+    push:
+      branches: [ "main" ]
+    pull_request:
+      branches: [ "main" ]
+
+jobs:
+  gherkin-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Start Flask server
+        run: |
+          nohup flask --app app/api.py --debug run &
+          echo $! > flask.pid
+      - name: Run gherkin tests
+        run: |
+          sleep 5
+          behave app/features

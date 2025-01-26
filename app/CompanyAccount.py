@@ -1,5 +1,5 @@
 import re
-from Account import Account
+from app.Account import Account
 import requests
 import os
 import datetime

@@ -20,7 +20,7 @@ jobs:
           pip install -r requirements.txt
       - name: Test with unittest
         run: |
-              python3 -m unittest
+              python3 -m unittest discover
       - name: Test coverage with unittest
         run: |
           python3 -m coverage run -m unittest

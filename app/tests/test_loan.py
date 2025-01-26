@@ -26,10 +26,10 @@ class TestLoan(unittest.TestCase):
     ])
 
 
-    def testLoanPersonalAcc(self, history, loanAmount, expeactedBalance, expectedHistory):
+    def testLoanPersonalAcc(self, history, loanAmount, expectedBalance, expectedHistory):
         self.firstPersonalAccount.history = history
         self.firstPersonalAccount.takeLoan(loanAmount)
-        self.assertEqual(self.firstPersonalAccount.balance, expeactedBalance)
+        self.assertEqual(self.firstPersonalAccount.balance, expectedBalance)
         self.assertEqual(self.firstPersonalAccount.history, expectedHistory, "historia nie została zaktualizowana")
 
     @parameterized.expand([

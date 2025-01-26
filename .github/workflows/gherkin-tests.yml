@@ -25,5 +25,4 @@ jobs:
       - name: Run gherkin tests
         run: |
           sleep 5
-          cd app
-          PYTHONPATH=.. behave
+          behave app/features

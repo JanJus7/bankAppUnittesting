@@ -25,7 +25,7 @@ def account_count():
 def get_account_by_pesel(pesel):
     account = AccountRegistry.searchByPesel(pesel)
     if account:
-        return jsonify({"name": account.name, "surname": account.surname, "pesel": account.pesel }), 200
+        return jsonify({"name": account.name, "surname": account.surname, "pesel": account.pesel, "balance": account.balance, "history": account.history }), 200
     else:
         return jsonify({"message": "Account not found"}), 404
 

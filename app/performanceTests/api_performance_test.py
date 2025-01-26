@@ -42,7 +42,7 @@ class TestApiPerformance(unittest.TestCase):
                 f"Account deletion error {i+1}: {response.status_code}"
             )
 
-    def create_account_and_send_transfers(self):
+    def test_create_account_and_send_transfers(self):
         pesel = "12345678901"
         requests.post(
                 f"{API_URL}/api/accounts",

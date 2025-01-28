@@ -75,3 +75,17 @@ def transfers(pesel):
                 return jsonify({"message": "Insufficient funds"}), 422
         else:
             return jsonify({"message": "Unprocessable entity"}), 422
+
+@app.route("/api/accounts/backup", methods=["POST"])
+def create_backup():
+    if AccountRegistry.dump_to_json():
+        return jsonify({"message": "Backup copy created"}), 200
+    else:
+        return jsonify({"message": "Error while creating a backup copy"}), 500
+
+@app.route("/api/accounts/restore", methods=["POST"])
+def restore_backup():
+    if AccountRegistry.load_from_json():
+        return jsonify({"message": "Backup copy restored"}), 200
+    else:
+        return jsonify({"message": "Error while restoring the backup copy"}), 500

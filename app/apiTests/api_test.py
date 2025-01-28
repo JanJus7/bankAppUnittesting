@@ -1,5 +1,7 @@
 import unittest
 import requests
+import json
+import os
 
 class TestApiCRUD(unittest.TestCase):
 
@@ -54,3 +56,29 @@ class TestApiCRUD(unittest.TestCase):
     def testDeleteNonExistingAccount(self):
         r = requests.delete(self.url + '/12345678900')
         self.assertEqual(r.status_code, 404)
+
+    def test_create_backup(self):
+        r = requests.post(self.url + '/backup')
+        self.assertEqual(r.status_code, 200)
+
+    def test_restore_backup(self):
+        with open("backup.json", "w") as f:
+            json.dump([
+                {"name": "Jan", "surname": "Kowalski", "pesel": "11111111111", "balance": 100, "history": []},
+                {"name": "Anna", "surname": "Nowak", "pesel": "22222222222", "balance": 200, "history": []}
+            ], f)
+
+        r = requests.post(self.url + '/restore')
+        self.assertEqual(r.status_code, 200)
+
+        r = requests.get(self.url + '/count')
+        self.assertEqual(r.status_code, 202)
+        data = r.json()
+        actual_count = data['message'].split(': ')[1]
+        self.assertEqual(actual_count, "2")
+
+    def tearDown(self):
+        try:
+            os.remove("backup.json")
+        except FileNotFoundError:
+            pass

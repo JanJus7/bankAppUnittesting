@@ -1,0 +1,16 @@
+[
+    {
+      "name": "Jan",
+      "surname": "Kowalski",
+      "pesel": "12345678901",
+      "balance": 1000,
+      "history": [100, 50, -50]
+    },
+    {
+      "name": "Anna",
+      "surname": "Nowak",
+      "pesel": "98765432109",
+      "balance": 500,
+      "history": [200, -100]
+    }
+]

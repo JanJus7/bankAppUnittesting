@@ -2,6 +2,8 @@ import unittest
 from parameterized import parameterized
 from ..PersonalAccount import PersonalAccount
 from ..AccountRegistry import AccountRegistry
+import os
+import json
 
 class TestRegistry(unittest.TestCase):
     imie = "Dariusz"
@@ -54,3 +56,34 @@ class TestRegistry(unittest.TestCase):
         non_existent_account = PersonalAccount("Fake", "User", "99999999999")
         AccountRegistry.removeAccount(non_existent_account)
         self.assertEqual(AccountRegistry.getAccountAmount(), 1)
+
+    def test_dump_to_json(self):
+        AccountRegistry.addAccount(self.konto66)
+        AccountRegistry.addAccount(self.konto77)
+        self.assertTrue(AccountRegistry.dump_to_json())
+        self.assertTrue(os.path.exists("backup.json"))
+
+        with open("backup.json", "r") as f:
+            data = json.load(f)
+        self.assertEqual(len(data), 3)
+        self.assertEqual(data[0]["pesel"], self.pesel)
+        self.assertEqual(data[1]["pesel"], self.pesel66)
+        self.assertEqual(data[2]["pesel"], self.pesel77)
+
+    def test_load_from_json(self):
+        with open("backup.json", "w") as f:
+            json.dump([
+                {"name": "Jan", "surname": "Kowalski", "pesel": "11111111111", "balance": 100, "history": []},
+                {"name": "Anna", "surname": "Nowak", "pesel": "22222222222", "balance": 200, "history": []}
+            ], f)
+
+        self.assertTrue(AccountRegistry.load_from_json())
+        self.assertEqual(AccountRegistry.getAccountAmount(), 2)
+        self.assertEqual(AccountRegistry.searchByPesel("11111111111").balance, 100)
+        self.assertEqual(AccountRegistry.searchByPesel("22222222222").balance, 200)
+
+    def tearDown(self):
+        try:
+            os.remove("backup.json")
+        except FileNotFoundError:
+            pass

@@ -13,8 +13,22 @@ class TestApiCRUD(unittest.TestCase):
 
     url = 'http://127.0.0.1:5000/api/accounts'
 
+    def setUp(self):
+        try:
+            requests.delete(self.url + '/' + self.payload['pesel'])
+        except Exception:
+            pass
+
     def tearDown(self):
-        requests.delete(self.url + '/' + self.payload['pesel'])
+        try:
+            requests.delete(self.url + '/' + self.payload['pesel'])
+        except Exception:
+            pass
+
+        try:
+            os.remove("backup.json")
+        except FileNotFoundError:
+            pass
 
     def testCreateAccount(self):
         r = requests.post(self.url, json=self.payload)
@@ -76,9 +90,3 @@ class TestApiCRUD(unittest.TestCase):
         data = r.json()
         actual_count = data['message'].split(': ')[1]
         self.assertEqual(actual_count, "2")
-
-    def tearDown(self):
-        try:
-            os.remove("backup.json")
-        except FileNotFoundError:
-            pass
